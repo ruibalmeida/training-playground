@@ -1,9 +1,36 @@
 pipeline {
-    agent { 
-		docker { 
-			image 'alpine:latest' 
-		}
-	}
-    stages {
+    agent {
+        docker {
+            image 'alpine:latest'
+        }
     }
-}
+    parameters {
+		string(name: 'NAME', defaultValue: 'default', description: 'What is your name?')
+        string(name: 'AGE', defaultValue: '0', description: 'How old are you?')
+		choice(name: 'CHOICES', choices: ['BUILD', 'TEST'], description: 'Choose your build')
+    }
+
+    stages {
+        stage('build') {
+			when{
+				environment name: 'CHOICES', value: 'build'
+			}
+			steps {
+                echo "BUILD"
+                echo "$NAME"
+                echo "$AGE"
+            }
+			
+		}
+        stage('test') {
+			when{
+				environment name: 'CHOICES', value: 'TEST'
+			}
+			steps {
+                echo "BUILD"
+                echo "$NAME"
+                echo "$AGE"
+            }
+		}
+        }
+    }
