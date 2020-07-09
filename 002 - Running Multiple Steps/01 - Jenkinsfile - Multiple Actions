@@ -6,7 +6,15 @@ pipeline {
 	}
     stages {
 		stage('build') {
-		
+		  steps {
+				printDate("firstFile")
+				sh "sleep 10s"
+				printDate("secondFile")
+			}
 		}
     }
+}
+
+def printDate(filename = '') {
+    sh "date > $filename && cat $filename"
 }
